@@ -1,7 +1,8 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
-    <Todo v-for="item in items" :key="item.id" :value="item.value"/>
+    <button @click="create">Create</button>
+    <Todo v-for="item in items" :key="item.id" :value="item.value" :id="item.id" />
   </div>
 </template>
 
@@ -17,6 +18,24 @@ export default {
   data: () => ({
     items: [],
   }),
+
+  methods: {
+    create: function(){
+      db.collection('todos')
+      .add({
+        value: 'New task'
+      })
+      .then(res =>{
+        console.log(res.id);
+          let item = {
+            value: 'New task'
+          };
+          item.id = res.id;
+          this.items.push(item);
+          console.log(this.items);
+      })
+    }
+  },
 
   created(){
     db.collection("todos")
