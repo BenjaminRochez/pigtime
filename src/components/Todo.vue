@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li class="todo_item">
     <div class="todo_dot"></div>
     <div class="todo_value" v-if="!this.shown">
       <button @click="toggleTodo">{{todo}}</button>
@@ -11,6 +11,7 @@
       </form>
     </div>
     <button @click="deleteTodo">Remove</button>
+    
   </li>
 </template>
 
@@ -76,3 +77,32 @@ export default {
   }
 };
 </script>
+
+<style>
+
+
+.todo_focus{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: rgba(0, 0, 0, .5);
+    z-index: 10;
+    content: '';
+}
+
+.todo_item{
+    z-index: 11;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    background: #fff;
+}
+
+*, :after, :before {
+    box-sizing: border-box;
+}
+</style>

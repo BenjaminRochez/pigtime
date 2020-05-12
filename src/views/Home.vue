@@ -2,7 +2,10 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png">
     <button @click="create">Create</button>
+    <ul>
     <Todo v-for="item in items" :key="item.id" :value="item.value" :id="item.id" />
+    <div class="todo_focus"></div>
+    </ul>
   </div>
 </template>
 
