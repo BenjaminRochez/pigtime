@@ -1,10 +1,10 @@
 <template>
-  <li class="todo_item">
+  <li class="todo_item" :class="{'is-focused': this.edit}">
     <div class="todo_dot"></div>
-    <div class="todo_value" v-if="!this.shown">
+    <div class="todo_value" v-if="!this.edit">
       <button @click="toggleTodo">{{todo}}</button>
     </div>
-    <div class="todo_form" v-if="this.shown">
+    <div class="todo_form" v-if="this.edit">
       <form action="#">
         <input type="text" ref="search" v-model="todo" />
         <button @click.prevent="sendData">Done</button>
@@ -20,13 +20,14 @@ import db from "@/firebase/init";
 export default {
   props: {
     value: String,
-    id: String
+    id: String,
+    editable: Boolean
   },
   data: () => ({
     todo: null,
     old_todo: null,
     status: null,
-    shown: false,
+    edit: false,
     identifier: null
   }),
 
@@ -62,11 +63,11 @@ export default {
         })
     },
     toggleTodo: function() {
-        if(this.shown){
+        if(this.edit){
             this.$nextTick(() => this.$refs.search.focus());
-            this.shown = !this.shown;
+            this.edit = !this.edit;
         }else{
-            this.shown = !this.shown;
+            this.edit = !this.edit;
         }
     }
   },
@@ -74,6 +75,11 @@ export default {
     this.todo = this.value;
     this.old_todo = this.todo;
     this.identifier = this.id;
+
+    if(this.editable){
+      this.edit = true;
+      this.$nextTick(() => this.$refs.search.focus());
+    }
   }
 };
 </script>
@@ -89,17 +95,23 @@ export default {
     left: 0px;
     background: rgba(0, 0, 0, .5);
     z-index: 10;
+    display: none;
     content: '';
 }
 
 .todo_item{
-    z-index: 11;
+    z-index: 9;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
     position: relative;
     width: 100%;
-    background: #fff;
+    
+}
+
+.todo_item.is-focused{
+  z-index: 11;
+  background: red;
 }
 
 *, :after, :before {

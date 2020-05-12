@@ -1,46 +1,53 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+  <div class="home" v-on:keydown.alt="create">
+    <img alt="Vue logo" src="../assets/logo.png" />
     <button @click="create">Create</button>
     <ul>
-    <Todo v-for="item in items" :key="item.id" :value="item.value" :id="item.id" />
-    <div class="todo_focus"></div>
+      <Todo
+        v-for="item in items"
+        :key="item.id"
+        :value="item.value"
+        :id="item.id"
+        :editable="item.edit"
+      />
+      <div class="todo_focus"></div>
     </ul>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Todo from '@/components/Todo.vue'
-import db from '@/firebase/init'
+import Todo from "@/components/Todo.vue";
+import db from "@/firebase/init";
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
     Todo
   },
   data: () => ({
-    items: [],
+    items: []
   }),
 
   methods: {
-    create: function(){
-      db.collection('todos')
-      .add({
-        value: 'New task'
-      })
-      .then(res =>{
-        console.log(res.id);
+    create: function() {
+      db.collection("todos")
+        .add({
+          value: "New task"
+        })
+        .then(res => {
+          console.log(res.id);
           let item = {
-            value: 'New task'
+            value: "New task"
           };
           item.id = res.id;
+          item.edit = true;
           this.items.push(item);
           console.log(this.items);
-      })
+        });
     }
   },
 
-  created(){
+  created() {
     db.collection("todos")
       .get()
       .then(snapshot => {
@@ -54,7 +61,17 @@ export default {
       .catch(err => {
         console.log(err);
       });
+  },
+  mounted() {
+    window.addEventListener("keydown", e => {
+      var key = e.which || e.keyCode;
+
+      if (e.altKey && key === 78) {
+        
+          this.create();
+        
+      }
+    });
   }
-  
-}
+};
 </script>
