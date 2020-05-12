@@ -1,6 +1,6 @@
 <template>
   <li class="todo_item" :class="{'is-focused': this.edit}">
-    <div class="todo_dot"></div>
+    <Slider  v-on:clicked="onClickChild" :priorit="prior"/> 
     <div class="todo_value" v-if="!this.edit">
       <button @click="toggleTodo">{{todo}}</button>
     </div>
@@ -17,21 +17,38 @@
 
 <script>
 import db from "@/firebase/init";
+import Slider from "../components/Slider";
 export default {
+  components: {
+    Slider
+  },
   props: {
     value: String,
     id: String,
-    editable: Boolean
+    editable: Boolean,
+    priority: String
   },
   data: () => ({
     todo: null,
     old_todo: null,
     status: null,
     edit: false,
-    identifier: null
+    identifier: null,
+    prior: null
   }),
 
   methods: {
+    onClickChild (value) {
+      db.collection('todos')
+      .doc(this.identifier)
+      .update({
+        priority: value
+      })
+      .then(() =>{
+        console.log('success dot');
+        this.prior = value;
+      })
+    },
     sendData: function() {
       if (this.todo != this.old_todo) {
         db.collection("todos")
@@ -75,7 +92,7 @@ export default {
     this.todo = this.value;
     this.old_todo = this.todo;
     this.identifier = this.id;
-
+    this.prior = this.priority;
     if(this.editable){
       this.edit = true;
       this.$nextTick(() => this.$refs.search.focus());

@@ -9,6 +9,7 @@
         :value="item.value"
         :id="item.id"
         :editable="item.edit"
+        :priority="item.priority"
       />
       <div class="todo_focus"></div>
     </ul>
@@ -32,12 +33,14 @@ export default {
     create: function() {
       db.collection("todos")
         .add({
-          value: "New task"
+          value: "New task",
+          priority: '5'
         })
         .then(res => {
           console.log(res.id);
           let item = {
-            value: "New task"
+            value: "New task",
+            priority: '5'
           };
           item.id = res.id;
           item.edit = true;
