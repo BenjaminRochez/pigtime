@@ -1,6 +1,11 @@
 <template>
   <div class="home" v-on:keydown.alt="create">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <header>
+      <Filters 
+        :order="latest"
+        v-on:updatedOrder="updateOrdering"
+      />
+    </header>
     <button @click="create">Create</button>
     <ul>
       <Todo
@@ -21,14 +26,17 @@
 // @ is an alias to /src
 import _ from "lodash";
 import Todo from "@/components/Todo.vue";
+import Filters from "@/components/Filters.vue";
 import db from "@/firebase/init";
 export default {
   name: "Home",
   components: {
-    Todo
+    Todo,
+    Filters
   },
   data: () => ({
-    items: []
+    items: [],
+    latest: false
   }),
 
   methods: {
@@ -50,8 +58,12 @@ export default {
         });
     },
     updateDot: function(value, identifier) {
-      var myindex = this.findWithAttr(this.items, 'id', identifier);
+      var myindex = this.findWithAttr(this.items, "id", identifier);
       this.items[myindex].priority = value;
+    },
+    updateOrdering: function(value){
+      console.log(this.latest, value);
+      this.latest = value;
     },
     findWithAttr: function(array, attr, value) {
       for (var i = 0; i < array.length; i += 1) {
@@ -65,7 +77,9 @@ export default {
 
   computed: {
     orderedTodo: function() {
-      return _.orderBy(this.items, "priority");
+      return this.latest
+        ? _.orderBy(this.items, "priority", "desc")
+        : _.orderBy(this.items, "priority", "asc");
     }
   },
 
