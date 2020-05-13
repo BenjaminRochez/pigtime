@@ -27,3 +27,11 @@ yarn run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
+# Todo
+- Unregister alt+n when creating
+- Add estimations + tracked time
+- Completed / In progress
+- Add dates
