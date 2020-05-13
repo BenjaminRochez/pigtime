@@ -36,7 +36,7 @@ export default {
   },
   data: () => ({
     items: [],
-    latest: false
+    latest: true
   }),
 
   methods: {
@@ -62,7 +62,6 @@ export default {
       this.items[myindex].priority = value;
     },
     updateOrdering: function(value){
-      console.log(this.latest, value);
       this.latest = value;
     },
     findWithAttr: function(array, attr, value) {
@@ -109,3 +108,14 @@ export default {
   }
 };
 </script>
+
+
+<style>
+body{
+  background: #1a1a1a;
+}
+
+p, ul, h1, h2,h3 a,{
+  color: #fff;
+}
+</style>
