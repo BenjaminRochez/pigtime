@@ -26,7 +26,7 @@ export default {
     value: String,
     id: String,
     editable: Boolean,
-    priority: String
+    priority: Number
   },
   data: () => ({
     todo: null,
@@ -47,6 +47,7 @@ export default {
       .then(() =>{
         console.log('success dot');
         this.prior = value;
+        this.$emit('dotUpdated', value, this.identifier);
       })
     },
     sendData: function() {
@@ -95,6 +96,7 @@ export default {
     this.prior = this.priority;
     if(this.editable){
       this.edit = true;
+      console.log('editable');
       this.$nextTick(() => this.$refs.search.focus());
     }
   }

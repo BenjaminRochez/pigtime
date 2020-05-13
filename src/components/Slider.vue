@@ -29,12 +29,12 @@ export default {
     toggled: false
   }),
   props: {
-    priorit: String
+    priorit: Number
 },
   methods: {
     toggleDot: function() {
       if(this.toggled){
-          this.$emit('clicked', this.dotSize);
+          this.$emit('clicked', parseInt(this.dotSize));
           this.toggled = !this.toggled;
       }else{
           this.toggled = !this.toggled;
@@ -43,10 +43,9 @@ export default {
   },
   created() {
       if(this.priorit){
-          console.log('ici');
           this.dotSize = this.priorit;
       }else{
-          this.dotSize = '5'
+          this.dotSize = 5
       }
     }
 };
